@@ -1,0 +1,51 @@
+// Copyright (C) 2022 The Android Open Source Project
+// Copyright (C) 2025 KonstaKANG
+// Copyright (C) 2025 Venkata Atchuta Bheemeswara Sarma Darbha
+//
+// SPDX-License-Identifier: Apache-2.0
+
+cc_binary {
+    name: "android.hardware.tv.hdmi.connection-service.opi",
+    relative_install_path: "hw",
+    vendor: true,
+    srcs: [
+        "HdmiConnection.cpp",
+        "main.cpp",
+    ],
+    shared_libs: [
+        "android.hardware.tv.hdmi.connection-V1-ndk",
+        "libbase",
+        "libbinder_ndk",
+        "liblog",
+    ],
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.tv.hdmi.connection-service.opi.rc",
+    src: "android.hardware.tv.hdmi.connection-service.opi.rc",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.tv.hdmi.connection-service.opi.xml",
+    src: "android.hardware.tv.hdmi.connection-service.opi.xml",
+    sub_dir: "vintf",
+    installable: false,
+}
+
+apex {
+    name: "com.android.hardware.tv.hdmi.connection.opi5",
+    manifest: "apex_manifest.json",
+    file_contexts: "apex_file_contexts",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: ["android.hardware.tv.hdmi.connection-service.opi"],
+    prebuilts: [
+        "android.hardware.tv.hdmi.connection-service.opi.rc",
+        "android.hardware.tv.hdmi.connection-service.opi.xml",
+    ],
+}

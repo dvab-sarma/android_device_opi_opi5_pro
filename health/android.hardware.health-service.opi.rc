@@ -1,0 +1,6 @@
+service vendor.health-opi /apex/com.android.hardware.health.opi5/bin/hw/android.hardware.health-service.opi
+    class hal
+    user system
+    group system
+    capabilities WAKE_ALARM BLOCK_SUSPEND
+    file /dev/kmsg w

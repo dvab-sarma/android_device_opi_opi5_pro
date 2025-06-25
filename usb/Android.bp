@@ -1,0 +1,54 @@
+// Copyright (C) 2020 The Android Open Source Project
+// Copyright (C) 2024 KonstaKANG
+// Copyright (C) 2025 Venkata Atchuta Bheemeswara Sarma Darbha
+//
+// SPDX-License-Identifier: Apache-2.0
+
+cc_binary {
+    name: "android.hardware.usb.gadget-service.opi",
+    relative_install_path: "hw",
+    vendor: true,
+    srcs: [
+        "MonitorFfs.cpp",
+        "UsbGadget.cpp",
+        "UsbGadgetUtils.cpp",
+        "main.cpp",
+    ],
+    shared_libs: [
+        "android.hardware.usb.gadget-V1-ndk",
+        "libbase",
+        "libbinder_ndk",
+        "liblog",
+        "libutils",
+    ],
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.usb.gadget-service.opi.rc",
+    src: "android.hardware.usb.gadget-service.opi.rc",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.usb.gadget-service.opi.xml",
+    src: "android.hardware.usb.gadget-service.opi.xml",
+    sub_dir: "vintf",
+    installable: false,
+}
+
+apex {
+    name: "com.android.hardware.usb.gadget.opi5",
+    manifest: "apex_manifest.json",
+    file_contexts: "apex_file_contexts",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: ["android.hardware.usb.gadget-service.opi"],
+    prebuilts: [
+        "android.hardware.usb.gadget-service.opi.rc",
+        "android.hardware.usb.gadget-service.opi.xml",
+    ],
+}

@@ -1,0 +1,4 @@
+service suspend_blocker_opi /apex/com.android.hardware.suspend_blocker.opi5/bin/suspend_blocker_opi
+    class hal
+    group system
+    user root

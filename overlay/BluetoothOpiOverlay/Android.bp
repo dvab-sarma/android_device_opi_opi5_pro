@@ -1,0 +1,11 @@
+// Copyright (C) 2021-2022 KonstaKANG
+// Copyright (C) 2025 Venkata Atchuta Bheemeswara Sarma Darbha
+//
+// SPDX-License-Identifier: Apache-2.0
+
+runtime_resource_overlay {
+    name: "BluetoothOpiOverlay",
+    resource_dirs: ["res"],
+    sdk_version: "current",
+    vendor: true,
+}

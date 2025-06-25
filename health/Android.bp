@@ -1,0 +1,59 @@
+// Copyright (C) 2018 The Android Open Source Project
+// Copyright (C) 2023 KonstaKANG
+// Copyright (C) 2025 Venkata Atchuta Bheemeswara Sarma Darbha
+//
+// SPDX-License-Identifier: Apache-2.0
+
+cc_binary {
+    name: "android.hardware.health-service.opi",
+    relative_install_path: "hw",
+    vendor: true,
+    srcs: [
+        "HealthImpl.cpp",
+        "main.cpp",
+    ],
+    static_libs: [
+        "libbatterymonitor",
+        "libhealth_aidl_impl",
+        "libhealthloop",
+    ],
+    shared_libs: [
+        "android.hardware.health-V4-ndk",
+        "libbase",
+        "libbinder_ndk",
+        "libcutils",
+        "liblog",
+        "libutils",
+    ],
+    overrides: ["charger"],
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.health-service.opi.rc",
+    src: "android.hardware.health-service.opi.rc",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.health-service.opi.xml",
+    src: "android.hardware.health-service.opi.xml",
+    sub_dir: "vintf",
+    installable: false,
+}
+
+apex {
+    name: "com.android.hardware.health.opi5",
+    manifest: "apex_manifest.json",
+    file_contexts: "apex_file_contexts",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: ["android.hardware.health-service.opi"],
+    prebuilts: [
+        "android.hardware.health-service.opi.rc",
+        "android.hardware.health-service.opi.xml",
+    ],
+}
