@@ -9,7 +9,7 @@ PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 $(call inherit-product, frameworks/native/build/tablet-7in-xhdpi-2048-dalvik-heap.mk)
-$(call inherit-product, vendor/brcm/opi3b/opi3b-vendor.mk)
+$(call inherit-product, vendor/opi/opi3b/opi3b-vendor.mk)
 
 # APEX
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
