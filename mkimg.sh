@@ -37,7 +37,7 @@ VERSION=OrangePi_5Pro_aosp
 DATE=$(date +%Y%m%d)
 TARGET=$(echo ${TARGET_PRODUCT} | sed 's/^aosp_//')
 IMGNAME=${VERSION}-${DATE}-${TARGET}.img
-IMGSIZE=16384MiB
+IMGSIZE=19456MiB
 
 if [ -f ${ANDROID_PRODUCT_OUT}/${IMGNAME} ]; then
   exit_with_error "${ANDROID_PRODUCT_OUT}/${IMGNAME} already exists!"
@@ -57,9 +57,12 @@ label: dos
 unit: sectors
 
 ${ANDROID_PRODUCT_OUT}/${IMGNAME}1 : start=32768, size=262144, type=c, bootable
-${ANDROID_PRODUCT_OUT}/${IMGNAME}2 : start=294912, size=5242880, type=83
-${ANDROID_PRODUCT_OUT}/${IMGNAME}3 : start=5617792, size=524288, type=83
-${ANDROID_PRODUCT_OUT}/${IMGNAME}4 : start=6142080, type=83
+${ANDROID_PRODUCT_OUT}/${IMGNAME}2 : start=294912, size=7122944, type=5
+${ANDROID_PRODUCT_OUT}/${IMGNAME}3 : start=7417856, type=83
+${ANDROID_PRODUCT_OUT}/${IMGNAME}5 : start=303104, size=6291456, type=83
+${ANDROID_PRODUCT_OUT}/${IMGNAME}6 : start=6596608, size=786432, type=83
+${ANDROID_PRODUCT_OUT}/${IMGNAME}7 : start=7385088, size=32768, type=83
+
 EOF
 )
 
@@ -76,17 +79,16 @@ sleep 1
 echo "Copying boot..."
 sudo dd if=${ANDROID_PRODUCT_OUT}/boot.img of=/dev/mapper/${LOOPDEV}p1 bs=1M
 echo "Copying system..."
-sudo dd if=${ANDROID_PRODUCT_OUT}/system.img of=/dev/mapper/${LOOPDEV}p2 bs=1M
+sudo dd if=${ANDROID_PRODUCT_OUT}/system.img of=/dev/mapper/${LOOPDEV}p5 bs=1M
 echo "Copying vendor..."
-sudo dd if=${ANDROID_PRODUCT_OUT}/vendor.img of=/dev/mapper/${LOOPDEV}p3 bs=1M
+sudo dd if=${ANDROID_PRODUCT_OUT}/vendor.img of=/dev/mapper/${LOOPDEV}p6 bs=1M
+
+
+echo "Creating metadata..."
+sudo mkfs.ext4 /dev/mapper/${LOOPDEV}p7 -I 512 -L metadata
 
 echo "Creating userdata..."
-sudo mkfs.ext4 /dev/mapper/${LOOPDEV}p4 -I 512 -L userdata
-# sudo mkdir -p /mnt/tmp_userdata
-# sudo mount /dev/mapper/${LOOPDEV}p4 /mnt/tmp_userdata
-# sudo mkdir -p /mnt/tmp_userdata/misc/keystore
-# sudo mkdir -p /mnt/tmp_userdata/apex/sessions
-# sudo umount /mnt/tmp_userdata
+sudo mkfs.ext4 /dev/mapper/${LOOPDEV}p3 -I 512 -L userdata
 sync
 
 sudo kpartx -d "/dev/${LOOPDEV}"

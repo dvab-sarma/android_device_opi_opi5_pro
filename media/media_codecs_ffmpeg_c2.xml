@@ -2,6 +2,7 @@
 <!--
      Copyright (C) 2022 Michael Goffioul <michael.goffioul@gmail.com>
      Copyright (C) 2025 KonstaKANG
+     Copyright (C) 2025 Venkata Atchuta Bheemeswara Sarma Darbha
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -70,13 +71,13 @@
         </MediaCodec>
         <MediaCodec name="c2.ffmpeg.h264.decoder" type="video/avc">
             <Alias name="OMX.ffmpeg.h264.decoder" />
-            <Limit name="size" min="2x2" max="4080x4080" />
+            <Limit name="size" min="2x2" max="7700x7700" />
             <Limit name="alignment" value="2x2" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
         <MediaCodec name="c2.ffmpeg.hevc.decoder" type="video/hevc">
             <Alias name="OMX.ffmpeg.hevc.decoder" />
-            <Limit name="size" min="2x2" max="4096x4096" />
+            <Limit name="size" min="2x2" max="7700x7700" />
             <Limit name="alignment" value="2x2" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
@@ -100,7 +101,7 @@
         </MediaCodec>
         <MediaCodec name="c2.ffmpeg.vp9.decoder" type="video/x-vnd.on2.vp9">
             <Alias name="OMX.ffmpeg.vp9.decoder" />
-            <Limit name="size" min="2x2" max="2048x2048" />
+            <Limit name="size" min="2x2" max="4096x4096" />
             <Limit name="alignment" value="2x2" />
             <Feature name="adaptive-playback" />
         </MediaCodec>

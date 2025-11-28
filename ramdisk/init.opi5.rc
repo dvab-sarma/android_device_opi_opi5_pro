@@ -2,28 +2,13 @@ import /vendor/etc/init/hw/init.opi5.usb.rc
 
 on init
     symlink /sdcard /storage/sdcard0
- 
+
 
 on fs
-    mount_all /vendor/etc/fstab.opi5
+    mount_all /vendor/etc/fstab.opi5 --early
 
+on late-fs
+    mount_all /vendor/etc/fstab.opi5 --late
 
-# created by me for wifi checking , going to use hidl therefore implemented this
-on post-fs-data
-    # Create the directories used by the Wireless subsystem
-    mkdir /data/vendor/wifi 0770 wifi wifi
-    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
-    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
-    exec - root root -- /system/bin/sh -c "chmod +x /vendor/lib64/hw/vulkan.panfrost.so"
-    exec - root root -- /system/bin/sh -c "chcon u:object_r:vendor_file:s0 /vendor/lib64/hw/vulkan.panfrost.so"
-
-
-
-#added by me just in case.
-service system_mode /system/bin/system_mode_daemon
-    class core
-    user root
-    group root
-    oneshot
     
 

@@ -8,6 +8,11 @@ ro.config.media_vol_default=20
 ro.config.media_vol_steps=25
 ro.hardware.audio.primary=opi
 
+# Desktop mode
+#persist.wm.debug.desktop_experience_devopts=1
+#persist.wm.debug.desktop_mode_enforce_device_restrictions=false
+#persist.wm.debug.force_desktop_first_on_default_display_for_testing=true
+
 # Bluetooth
 bluetooth.device.class_of_device?=90,2,12
 bluetooth.device.default_name=OrangePi 5 Pro
@@ -48,8 +53,6 @@ ro.hardware.camera=libcamera
 ro.soc.manufacturer=Rockchip
 ro.soc.model=RK3588s
 
-# Display
-debug.drm.mode.force=1920x1080
 
 # FFmpeg
 persist.vendor.ffmpeg_codec2.rank.audio=16
@@ -58,25 +61,27 @@ persist.vendor.ffmpeg_codec2.v4l2.h265=true
 
 # Graphics
 
-ro.hardware.vulkan=panfrost
-ro.opengles.version=196610
 ro.vulkan.abi=arm64-v8a
 ro.vulkan.version=1.2.0
-#vendor.hwc.backend_override=drm
-#vendor.hwc.drm.ctm=DRM_OR_STANDARD
-vendor.hwc.drm.ctm=DRM_OR_GPU
+vendor.hwc.drm.ctm=DRM_OR_IGNORE
+#vendor.hwc.drm.disable_hdr=1
+#vendor.hwc.drm.force_mode=1920x1080
 
 # Lockscreen
 ro.lockscreen.disable.default=true
 
 # Media
 debug.stagefright.c2inputsurface=-1
-#media.c2.hal.selection=aidl
+media.c2.hal.selection=aidl
 
 # MGLRU
 persist.device_config.mglru_native.lru_gen_config=core
 
+# Virtualization
+ro.boot.hypervisor.vm.supported=1
+
 # Wifi
+ro.boot.wificountrycode=00
 wifi.interface=wlan0
 
 # Window extensions
@@ -84,3 +89,8 @@ persist.settings.large_screen_opt.enabled=true
 
 #minigbm
 vendor.minigbm.debug=logbos
+
+# Mesa
+ro.hardware.egl=mesa
+ro.hardware.vulkan=panfrost
+

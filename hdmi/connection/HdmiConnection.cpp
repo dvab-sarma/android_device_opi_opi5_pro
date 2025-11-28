@@ -33,7 +33,7 @@ namespace hdmi {
 namespace connection {
 namespace implementation {
 
-static const string drmCard = "card1";
+static const string drmCard = "card0";
 
 HdmiConnection::HdmiConnection() {
     mCallback = nullptr;

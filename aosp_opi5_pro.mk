@@ -24,6 +24,14 @@ PRODUCT_PACKAGES += \
     WifiOpiOverlay \
     SystemUIOpiOverlay 
 
+# Freeform windows
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.software.freeform_window_management.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.freeform_window_management.xml
+
+
+# Boot Animation
+PRODUCT_COPY_FILES += \
+    device/opi/opi5_pro/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/media/bootanimation.zip
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/tablet_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/tablet_core_hardware.xml

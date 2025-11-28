@@ -16,7 +16,12 @@ PRODUCT_CHARACTERISTICS := automotive,nosdcard
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
-$(call enforce-product-packages-exist,Bluetooth Keyguard Launcher2 OverviewApp RotaryIME RotaryPlayground libnfc_ndef libvariablespeed pppd)
+$(call enforce-product-packages-exist,Bluetooth Keyguard Launcher2 OverviewApp RotaryIME RotaryPlayground com.android.ranging libnfc_ndef libvariablespeed pppd)
+
+
+# android.car
+PRODUCT_PACKAGES += \
+    liblargeparcelablejni
 
 # Audio
 PRODUCT_PACKAGES += \

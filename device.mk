@@ -13,9 +13,11 @@ $(call inherit-product, vendor/opi/opi3b/opi3b-vendor.mk)
 
 # APEX
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
+OVERRIDE_PRODUCT_COMPRESSED_APEX := false
 
 # API level
-PRODUCT_SHIPPING_API_LEVEL := 35
+PRODUCT_SHIPPING_API_LEVEL := 36
+
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -42,9 +44,6 @@ PRODUCT_COPY_FILES += \
     frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
     frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
     frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
-
-
-
 
 
 # Bluetooth
@@ -145,52 +144,18 @@ PRODUCT_PACKAGES += \
     com.android.hardware.media.c2.ffmpeg
 
 
-
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/media/media_codecs_ffmpeg_c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_ffmpeg_c2.xml \
     $(DEVICE_PATH)/seccomp_policy/android.hardware.media.c2-ffmpeg.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/android.hardware.media.c2-ffmpeg.policy
 
 # Gatekeeper
 PRODUCT_PACKAGES += \
-    com.android.hardware.gatekeeper.nonsecure
+    com.android.hardware.gatekeeper.nonsecure \
 
 # Graphics
-ifeq ($(BOARD_USES_ANGLE),true)
-TARGET_USES_VULKAN := true
-
-$(call soong_config_set, minigbm, platform, rockchip)
-
+PRODUCT_SOONG_NAMESPACES += external/mesa3d-panfrost
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator-service.minigbm \
-    mapper.minigbm \
-    gralloc.minigbm
- 
-PRODUCT_PACKAGES += \
-    libEGL_angle \
-    libGLESv1_CM_angle \
-    libGLESv2_angle
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.vulkan=panfrost \
-    ro.hardware.egl=angle \
-    ro.opengles.version=196610 \
-    debug.renderengine.backend=skiavkthreaded
-
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.gralloc=minigbm
-
-# ! --------- WARNING : This dependency is currently under developement and if used might cause rendering problems and potential mishaps
-# PRODUCT_PACKAGES += \
-#     mesa3d_desktop-panvk_libvulkan_panfrost
-    
-
-else
-
-PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator-service.minigbm_gbm_mesa \
-    mapper.minigbm_gbm_mesa \
-    libgbm_mesa_wrapper \
+    com.android.hardware.graphics.allocator.minigbm_gbm_mesa
 
 PRODUCT_PACKAGES += \
     libEGL_mesa \
@@ -199,16 +164,8 @@ PRODUCT_PACKAGES += \
     libgallium_dri
 
 PRODUCT_PACKAGES += \
-    dri_gbm \
-    libgbm_mesa
-
-PRODUCT_PACKAGES += \
-    vulkan.panfrost
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.egl=mesa
-
-endif
+    com.android.hardware.vulkan.panfrost
+  
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.opengles.deqp.level-2024-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.opengles.deqp.level.xml
@@ -277,11 +234,14 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/seccomp_policy/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
     $(DEVICE_PATH)/seccomp_policy/mediaswcodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaswcodec.policy
 
+
+# Soong
+PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
 # Storage
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
  # Suspend
- PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
      com.android.hardware.suspend_blocker.opi5
 
 # Thermal
@@ -303,27 +263,49 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.host.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
+# V4L-Utils
+PRODUCT_PACKAGES += \
+    cec-ctl \
+    ir-keytable \
+    media-ctl \
+    v4l2-ctl \
+
+
 # Virtualization
 $(call inherit-product, packages/modules/Virtualization/apex/product_packages.mk)
 
 
 
 # Wifi
-PRODUCT_PACKAGES += \
-    android.hardware.wifi-service \
-    hostapd \
-    hostapd_cli \
-    libwpa_client \
-    wificond \
-    wpa_cli \
-    wpa_supplicant \
-    wpa_supplicant.conf
+# PRODUCT_PACKAGES += \
+#     android.hardware.wifi-service \
+#     hostapd \
+#     hostapd_cli \
+#     libwpa_client \
+#     wificond \
+#     wpa_cli \
+#     wpa_supplicant \
+#     wpa_supplicant.conf
 
-PRODUCT_COPY_FILES += \
-    hardware/broadcom/wlan/bcmdhd/config/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf
+# PRODUCT_COPY_FILES += \
+#     hardware/broadcom/wlan/bcmdhd/config/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf
+
+
+# Wifi
+PRODUCT_PACKAGES += \
+    com.android.hardware.wifi \
+    com.android.hardware.wifi.hostapd.opi5 \
+    com.android.hardware.wifi.supplicant.opi5 \
+    libwpa_client \
+    wificond
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
 
+# Packages
+PRODUCT_BROKEN_VERIFY_USES_LIBRARIES := true
+
+PRODUCT_PACKAGES += \
+    Jelly
 # Window extensions
 $(call inherit-product, $(SRC_TARGET_DIR)/product/window_extensions.mk)

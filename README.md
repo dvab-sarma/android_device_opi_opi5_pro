@@ -1,6 +1,6 @@
-AOSP 16 device configuration for Orangepi 5 Pro.
+AOSP 15 device configuration for Orangepi 5 Pro.
 
-Ported from KonstaKang's raspberry vanilla aosp 16 project.
+Ported from KonstaKang's raspberry vanilla aosp 15 project.
 
 Not working - 
 

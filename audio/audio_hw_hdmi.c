@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "audio_hw_rpi_hdmi"
+#define LOG_TAG "audio_hw_opi_hdmi"
 //#define LOG_NDEBUG 0
 
 #include <errno.h>

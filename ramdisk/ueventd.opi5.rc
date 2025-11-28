@@ -6,19 +6,13 @@
 /dev/v4l-subdev*                                                             0660   system     camera
 /dev/video*                                                                  0660   system     camera
 
-# CEC
-
-
-
 # DMA
 /dev/dma_heap/linux,cma                                                      0666   system     graphics
 /dev/dma_heap/system                                                         0666   system     graphics
 
 # FFmpeg
-/dev/media0                                                                  0660   media      media
-/dev/video1                                                                  0660   media      media
+/dev/media*                                                                  0660   media      media
+/dev/video*                                                                  0660   media      media
 
 # USB
 /sys/class/udc/1000480000.usb  current_speed                                 0664   system     system
-
-#ramdisk created
