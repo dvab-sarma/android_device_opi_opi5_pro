@@ -1,11 +1,11 @@
-AOSP 15 device configuration for Orangepi 5 Pro.
+AOSP 16 device configuration for Orangepi 5 Pro.
 
-Ported from KonstaKang's raspberry vanilla aosp 15 project.
+Ported from KonstaKang's raspberry vanilla aosp 16 project.
 
 Not working - 
 
 Camera
-Hdmi audio and 3.5 mm audio
+3.5 mm audio
 
 Working - 
 
