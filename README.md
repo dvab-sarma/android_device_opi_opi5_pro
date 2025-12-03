@@ -1,16 +1,14 @@
-AOSP 15 device configuration for Orangepi 5 Pro.
+AOSP 16 device configuration for Orangepi 5 Pro.
 
-Ported from KonstaKang's raspberry vanilla aosp 15 project.
+Ported from KonstaKang's raspberry vanilla aosp 16 project.
 
-Not working - 
+Not working -
 
-Camera
-Hdmi audio and 3.5 mm audio
+Camera 3.5 mm audio
 
-Working - 
+Working -
 
 everything else including vulkan.
-
 
 This project can be ported to any device which utilises Rockchip SoC with minor changes.
 
