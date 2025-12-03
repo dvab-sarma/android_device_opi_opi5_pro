@@ -4,7 +4,8 @@ Ported from KonstaKang's raspberry vanilla aosp 16 project.
 
 Not working -
 
-Camera 3.5 mm audio
+Camera
+3.5 mm audio
 
 Working -
 
