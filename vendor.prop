@@ -61,8 +61,8 @@ persist.vendor.ffmpeg_codec2.v4l2.h265=true
 
 # Graphics
 
-ro.vulkan.abi=arm64-v8a
-ro.vulkan.version=1.2.0
+#ro.vulkan.abi=arm64-v8a
+#ro.vulkan.version=1.2.0
 vendor.hwc.drm.ctm=DRM_OR_IGNORE
 #vendor.hwc.drm.disable_hdr=1
 #vendor.hwc.drm.force_mode=1920x1080
@@ -92,5 +92,5 @@ vendor.minigbm.debug=logbos
 
 # Mesa
 ro.hardware.egl=mesa
-ro.hardware.vulkan=panfrost
+
 
