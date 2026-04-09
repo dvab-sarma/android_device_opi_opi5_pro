@@ -259,9 +259,6 @@ PRODUCT_COPY_FILES += \
 
 # V4L-Utils
 PRODUCT_PACKAGES += \
-    cec-ctl \
-    ir-keytable \
-    media-ctl \
     v4l2-ctl \
 
 
