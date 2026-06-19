@@ -1,0 +1,31 @@
+# RK3588 headless-boot display cascade break
+#
+# drm_hwcomposer supports headless mode (null-display), but HWC/SF restart
+# chains can cause a 5-second class_main restart loop when no HDMI is connected.
+#
+# SF override: strip "onrestart restart --only-if-running zygote" so a SF crash
+# doesn't cascade into a full class_main reset.
+#
+# HWC override: strip "onrestart restart surfaceflinger" so HWC crash doesn't
+# restart SF in a loop.
+#
+# gralloc allocator: NOT overridden here. Letting the APEX RC manage it natively
+# so its crash/restart behaviour (onrestart restart surfaceflinger) is preserved.
+# SF's override already prevents SF restart from cascading to zygote.
+
+service surfaceflinger /system/bin/surfaceflinger
+    override
+    class core animation
+    user system
+    group graphics drmrpc readproc
+    capabilities SYS_NICE
+    task_profiles HighPerformance
+
+service vendor.hwcomposer-3 /apex/com.android.hardware.graphics.composer/bin/android.hardware.composer.hwc3-service.drm
+    override
+    class hal animation
+    interface aidl android.hardware.graphics.composer3.IComposer/default
+    user system
+    group graphics drmrpc
+    capabilities SYS_NICE
+    task_profiles ServiceCapacityLow

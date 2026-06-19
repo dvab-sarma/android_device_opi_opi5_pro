@@ -1,0 +1,19 @@
+# vendor.audio-hal override for RK3588
+#
+# The default RC has "onrestart restart audioserver" which causes audioserver
+# to restart every time the HAL crashes, creating a 5-second restart cycle
+# visible in logs. The HAL crashes during ALSA device enumeration on this
+# board, but audioserver itself is healthy.
+#
+# Removing "onrestart restart audioserver" lets the HAL crash and restart
+# independently without pulling audioserver down with it.
+
+service vendor.audio-hal /vendor/bin/hw/android.hardware.audio.service
+    override
+    class hal
+    user audioserver
+    group audio camera drmrpc inet media mediadrm net_bt net_bt_admin net_bw_acct wakelock context_hub system
+    capabilities BLOCK_SUSPEND SYS_NICE
+    rlimit rtprio 10 10
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh HighPerformance

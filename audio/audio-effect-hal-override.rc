@@ -1,0 +1,18 @@
+# Override the AIDL audio effects HAL service.
+#
+# android.hardware.audio.effect.service-aidl.example crashes on RK3588
+# (likely the liberaser ML model loader failing inside the APEX context).
+#
+# Two-part mitigation:
+#   1) IFactory/default is removed from the APEX VINTF fragment, so audioserver
+#      will not call waitForService(IFactory/default) and won't hang or abort.
+#   2) This override marks the service as disabled AND removes the
+#      "onrestart restart audioserver" directive so a crash here can never
+#      cascade into a class_main restart loop.
+service vendor.audio-effect-hal-aidl /apex/com.android.hardware.audio/bin/hw/android.hardware.audio.effect.service-aidl.example
+    override
+    class hal
+    user audioserver
+    group audio media
+    disabled
+    oneshot

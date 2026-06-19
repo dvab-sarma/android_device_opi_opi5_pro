@@ -14,13 +14,22 @@ $(call inherit-product, vendor/opi/opi3b/opi3b-vendor.mk)
 # APEX
 $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 OVERRIDE_PRODUCT_COMPRESSED_APEX := false
+# trunk_staging sets RELEASE_APEX_USE_EROFS_PREINSTALLED=true which switches APEX
+# payloads to compressed EROFS. The RK3588 kernel lacks CONFIG_EROFS_FS_ZIP so
+# force ext4 payloads to prevent mount failures at boot.
+OVERRIDE_PRODUCT_DEFAULT_APEX_PAYLOAD_TYPE := ext4
 
 # API level
 PRODUCT_SHIPPING_API_LEVEL := 36
 
 
 # Audio
+# AIDL audio core APEX (stub). This declares IModule/default in the vendor VINTF
+# manifest so that audioserver uses the AIDL path (which waits for the service)
+# rather than the racy synchronous HIDL query that fires before vendor.audio-hal
+# has registered with HwServiceManager.
 PRODUCT_PACKAGES += \
+    com.android.hardware.audio \
     android.hardware.audio.service \
     android.hardware.audio@7.1-impl \
     android.hardware.audio.effect@7.0-impl \
@@ -45,6 +54,15 @@ PRODUCT_COPY_FILES += \
     frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
     frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
 
+# Disable the AIDL audio effects HAL service which crashes on RK3588.
+# IFactory/default is also removed from the APEX VINTF fragment so audioserver
+# will not call waitForService(IFactory/default).
+# Also override vendor.audio-hal to remove "onrestart restart audioserver" so a
+# HAL crash doesn't pull audioserver down in a 5-second restart loop.
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/audio/audio-effect-hal-override.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/audio-effect-hal-override.rc \
+    $(DEVICE_PATH)/audio/audio-hal-override.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/audio-hal-override.rc
+
 
 # Bluetooth
 PRODUCT_PACKAGES += \
@@ -54,8 +72,11 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth.xml \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth_le.xml
 
+# Note: android.hardware.bluetooth.audio-impl is bundled inside
+# com.android.hardware.audio APEX (native_shared_libs) and must NOT be
+# installed separately to vendor — doing so creates a duplicate VINTF
+# declaration for IBluetoothAudioProviderFactory/default.
 PRODUCT_PACKAGES += \
-    android.hardware.bluetooth.audio-impl \
     audio.bluetooth.default
 
 PRODUCT_COPY_FILES += \
@@ -175,6 +196,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     com.android.hardware.graphics.composer.drm_hwcomposer
 
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/graphics/graphics-nodisplay-override.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/graphics-nodisplay-override.rc
+
 
 # Health
 PRODUCT_PACKAGES += \
@@ -186,8 +210,11 @@ PRODUCT_PACKAGES += \
     hwservicemanager
 
 # Kernel
+# NOTE: use bare 'kernel' as destination, not $(PRODUCT_OUT)/kernel.
+# $(PRODUCT_OUT) is empty when product files are parsed; the build system
+# prepends $(PRODUCT_OUT) to every PRODUCT_COPY_FILES destination itself.
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)-kernel/Image:$(PRODUCT_OUT)/kernel
+    $(DEVICE_PATH)-kernel/Image:kernel
 
 # Keylayout
 PRODUCT_COPY_FILES += \
@@ -211,7 +238,13 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_tv.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_tv.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_video.xml
 
-# Power
+# Memtrack (required by FCM; provides IMemtrack/default stub for GPU memory reporting)
+PRODUCT_PACKAGES += \
+    com.android.hardware.memtrack
+
+# Power (com.android.hardware.power APEX bundles both the Power HAL and
+# the PowerStats HAL internally; adding the standalone binary separately
+# would create a duplicate VINTF fragment for IPowerStats/default.)
 PRODUCT_PACKAGES += \
     com.android.hardware.power
 
