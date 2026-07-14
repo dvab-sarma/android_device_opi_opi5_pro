@@ -1,44 +1,257 @@
-// Copyright (C) 2015 The Android Open Source Project
-// Copyright (C) 2021-2023 KonstaKANG
-// Copyright (C) 2025 Venkata Atchuta Bheemeswara Sarma Darbha
+// Copyright (C) 2022 The Android Open Source Project
+// Copyright (C) 2025 KonstaKANG
 //
 // SPDX-License-Identifier: Apache-2.0
 
-cc_library_shared {
-    name: "audio.primary.opi",
-    relative_install_path: "hw",
+cc_defaults {
+    name: "aidlaudioservice_opi_defaults",
     vendor: true,
-    srcs: ["audio_hw.c"],
-    include_dirs: [
-        "external/expat/lib",
-        "external/tinyalsa/include",
-        "system/media/audio_effects/include",
-        "system/media/audio_utils/include",
-    ],
-    header_libs: ["libhardware_headers"],
     shared_libs: [
+        "android.hardware.audio.core-V4-ndk",
+        "android.hardware.audio.core.sounddose-V4-ndk",
+        "android.hardware.bluetooth.audio-V6-ndk",
+        "android.hardware.bluetooth.audio-impl",
+        "android.hardware.common-V2-ndk",
+        "android.hardware.common.fmq-V1-ndk",
+        "android.media.audio.common.types-V5-ndk",
+        "libalsautilsv2-opi",
+        "libasound",
+        "libaudio_aidl_conversion_common_ndk",
+        "libaudioaidlcommon",
+        "libaudioutils",
+        "libbase",
+        "libbinder_ndk",
+        "libbluetooth_audio_session_aidl",
         "libcutils",
+        "libfmq",
         "liblog",
-        "libtinyalsa",
+        "libmedia_helper",
+        "libnbaio_mono",
+        "libstagefright_foundation",
+        "libtinyalsav2",
+        "libutils",
+        "libxml2",
     ],
-    cflags: ["-Wno-unused-parameter"],
+    header_libs: [
+        "libaudio_system_headers",
+        "libaudioaidl_opi_headers",
+        "libxsdc-utils",
+    ],
+    cflags: [
+        "-DBACKEND_NDK",
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+        "-Wthread-safety",
+
+    ],
 }
 
-cc_library_shared {
-    name: "audio.primary.opi_hdmi",
-    relative_install_path: "hw",
-    vendor: true,
-    srcs: ["audio_hw_hdmi.c"],
-    include_dirs: [
-        "external/expat/lib",
-        "system/media/audio_effects/include",
-        "system/media/audio_utils/include",
+cc_library {
+    name: "libaudioserviceimpl-opi",
+    defaults: ["aidlaudioservice_opi_defaults"],
+    export_include_dirs: ["include"],
+    srcs: [
+        "AidlConversionXsdc.cpp",
+        "AudioPolicyConfigXmlConverter.cpp",
+        "Bluetooth.cpp",
+        "CapEngineConfigXmlConverter.cpp",
+        "Config.cpp",
+        "Configuration.cpp",
+        "EngineConfigXmlConverter.cpp",
+        "Module.cpp",
+        "ModulePrimary.cpp",
+        "SoundDose.cpp",
+        "Stream.cpp",
+        "Telephony.cpp",
+        "XsdcConversion.cpp",
+        "alsa/Mixer.cpp",
+        "alsa/ModuleAlsa.cpp",
+        "alsa/StreamAlsa.cpp",
+        "alsa/Utils.cpp",
+        "bluetooth/DevicePortProxy.cpp",
+        "bluetooth/ModuleBluetooth.cpp",
+        "bluetooth/StreamBluetooth.cpp",
+        "deprecated/StreamSwitcher.cpp",
+        "primary/PrimaryMixer.cpp",
+        "primary/StreamPrimary.cpp",
+        "r_submix/ModuleRemoteSubmix.cpp",
+        "r_submix/StreamRemoteSubmix.cpp",
+        "r_submix/SubmixRoute.cpp",
+        "stub/ApeHeader.cpp",
+        "stub/DriverStubImpl.cpp",
+        "stub/ModuleStub.cpp",
+        "stub/StreamMmapStub.cpp",
+        "stub/StreamOffloadStub.cpp",
+        "stub/StreamStub.cpp",
+        "usb/ModuleUsb.cpp",
+        "usb/StreamUsb.cpp",
+        "usb/UsbAlsaMixerControl.cpp",
     ],
-    header_libs: ["libhardware_headers"],
+    generated_sources: [
+        "audio_policy_capengine_configuration_aidl_opi",
+        "audio_policy_configuration_aidl_opi",
+        "audio_policy_engine_configuration_aidl_opi",
+    ],
+    generated_headers: [
+        "audio_policy_capengine_configuration_aidl_opi",
+        "audio_policy_configuration_aidl_opi",
+        "audio_policy_engine_configuration_aidl_opi",
+    ],
+    export_generated_headers: [
+        "audio_policy_capengine_configuration_aidl_opi",
+        "audio_policy_configuration_aidl_opi",
+        "audio_policy_engine_configuration_aidl_opi",
+    ],
     shared_libs: [
-        "libcutils",
-        "liblog",
-        "libasound",
+        "libmediautils_vendor",
     ],
-    cflags: ["-Wno-unused-parameter"],
+    export_shared_lib_headers: [
+        "libaudio_aidl_conversion_common_ndk",
+    ],
+}
+
+cc_library {
+    name: "libeffectconfig-opi",
+    defaults: ["aidlaudioeffectservice_opi_defaults"],
+    srcs: [
+        "EffectConfig.cpp",
+    ],
+    shared_libs: [
+        "libmedia_helper",
+        "libtinyxml2",
+    ],
+    export_shared_lib_headers: [
+        "libtinyxml2",
+    ],
+    export_include_dirs: [
+        "include",
+    ],
+}
+
+filegroup {
+    name: "effectCommonFileRpi",
+    srcs: [
+        "EffectContext.cpp",
+        "EffectImpl.cpp",
+        "EffectThread.cpp",
+    ],
+}
+
+cc_binary {
+    name: "android.hardware.audio.service.opi",
+    relative_install_path: "hw",
+    defaults: ["aidlaudioservice_opi_defaults"],
+    static_libs: [
+        "libaudioserviceimpl-opi",
+    ],
+    srcs: ["main.cpp"],
+    installable: false,
+}
+
+cc_defaults {
+    name: "aidlaudioeffectservice_opi_defaults",
+    vendor: true,
+    shared_libs: [
+        "android.hardware.audio.effect-V4-ndk",
+        "android.media.audio.common.types-V5-ndk",
+        "libapexsupport",
+        "libaudio_aidl_conversion_common_ndk",
+        "libaudioutils",
+        "libbase",
+        "libbinder_ndk",
+        "liblog",
+        "libutils",
+    ],
+    header_libs: [
+        "libaudio_system_headers",
+        "libaudioaidl_opi_headers",
+    ],
+    cflags: [
+        "-DBACKEND_NDK",
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+    ],
+}
+
+cc_binary {
+    name: "android.hardware.audio.effect.service.opi",
+    relative_install_path: "hw",
+    defaults: ["aidlaudioeffectservice_opi_defaults"],
+    shared_libs: [
+        "android.hardware.common-V2-ndk",
+        "android.hardware.common.fmq-V1-ndk",
+        "libaudioaidlcommon",
+        "libcutils",
+        "libeffectconfig-opi",
+        "libfmq",
+    ],
+    header_libs: [
+        "libsystem_headers",
+    ],
+    srcs: [
+        "EffectFactory.cpp",
+        "EffectMain.cpp",
+    ],
+    cflags: [
+        "-Wthread-safety",
+    ],
+    installable: false,
+}
+
+cc_library_headers {
+    name: "libaudioaidl_opi_headers",
+    export_include_dirs: ["include"],
+    vendor_available: true,
+}
+
+prebuilt_etc {
+    name: "android.hardware.audio.service.opi5.rc",
+    src: "android.hardware.audio.service.opi5.rc",
+    installable: false,
+}
+
+prebuilt_etc {
+    name: "android.hardware.audio.service.opi5.xml",
+    src: "android.hardware.audio.service.opi5.xml",
+    sub_dir: "vintf",
+    installable: false,
+}
+
+apex {
+    name: "com.android.hardware.audio.opi5",
+    manifest: "manifest.json",
+    file_contexts: "file_contexts",
+    key: "com.android.hardware.key",
+    certificate: ":com.android.hardware.certificate",
+    updatable: false,
+    vendor: true,
+
+    binaries: [
+        "android.hardware.audio.effect.service.opi",
+        "android.hardware.audio.service.opi",
+    ],
+    native_shared_libs: [
+        "libbundleaidl_opi",
+        "libdownmixaidl_opi",
+        "libdynamicsprocessingaidl_opi",
+        "libloudnessenhanceraidl_opi",
+        "libreverbaidl_opi",
+        "libvisualizeraidl_opi",
+    ],
+    prebuilts: [
+        "android.hardware.audio.service.opi5.rc",
+        "android.hardware.audio.service.opi5.xml",
+        "android.hardware.bluetooth.audio.xml",
+    ],
+    required: [
+        "aidl_audio_set_configurations_bfbs",
+        "aidl_audio_set_scenarios_bfbs",
+        "aidl_default_audio_set_configurations_json",
+        "aidl_default_audio_set_scenarios_json",
+        "hfp_codec_capabilities_xml",
+        "libasound-config",
+        "libasound-config-pcm",
+    ],
 }

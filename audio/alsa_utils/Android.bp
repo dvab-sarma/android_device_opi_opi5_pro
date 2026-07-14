@@ -1,0 +1,34 @@
+// Copyright (C) 2015 The Android Open Source Project
+// Copyright (C) 2025 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
+
+cc_library {
+    name: "libalsautilsv2-opi",
+    vendor_available: true,
+    srcs: [
+        "alsa_device_profile.c",
+        "alsa_device_proxy.c",
+        "alsa_format.c",
+        "alsa_logging.c",
+    ],
+    export_include_dirs: ["include"],
+    header_libs: [
+        "libaudio_system_headers",
+    ],
+    export_header_lib_headers: [
+        "libaudio_system_headers",
+    ],
+    shared_libs: [
+        "libasound",
+        "libaudioutils",
+        "libcutils",
+        "liblog",
+        "libtinyalsav2",
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wno-unused-parameter",
+    ],
+}

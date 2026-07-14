@@ -1,0 +1,49 @@
+// Copyright (C) 2018 The Android Open Source Project
+// Copyright (C) 2025 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
+
+cc_library_shared {
+    name: "libdynamicsprocessingaidl_opi",
+    relative_install_path: "soundfx",
+    vendor: true,
+    srcs: [
+        ":effectCommonFileRpi",
+        "aidl/DynamicsProcessing.cpp",
+        "aidl/DynamicsProcessingContext.cpp",
+        "dsp/DPBase.cpp",
+        "dsp/DPFrequency.cpp",
+    ],
+    static_libs: [
+        "libaudioaidlranges",
+    ],
+    shared_libs: [
+        "android.hardware.audio.effect-V4-ndk",
+        "android.hardware.common-V2-ndk",
+        "android.hardware.common.fmq-V1-ndk",
+        "android.media.audio.common.types-V5-ndk",
+        "libaudio_aidl_conversion_common_ndk",
+        "libaudioaidlcommon",
+        "libaudioutils",
+        "libbase",
+        "libbinder_ndk",
+        "libcutils",
+        "libfmq",
+        "liblog",
+        "libutils",
+    ],
+    header_libs: [
+        "libaudio_system_headers",
+        "libaudioaidl_opi_headers",
+        "libaudioeffects",
+        "libeigen",
+        "libsystem_headers",
+    ],
+    cflags: [
+        "-DBACKEND_NDK",
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+        "-Wthread-safety",
+    ],
+}

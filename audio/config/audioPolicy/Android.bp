@@ -1,0 +1,11 @@
+// Copyright (C) 2022 The Android Open Source Project
+// Copyright (C) 2025 KonstaKANG
+//
+// SPDX-License-Identifier: Apache-2.0
+
+xsd_config {
+    name: "audio_policy_configuration_aidl_opi",
+    srcs: ["audio_policy_configuration.xsd"],
+    package_name: "android.audio.policy.configuration",
+    nullability: true,
+}
