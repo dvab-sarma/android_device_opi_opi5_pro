@@ -1,0 +1,21 @@
+# Applies vendor.rockchip.recovery_boot to config.txt on the boot
+# partition. Runs as root because mounting a block device requires
+# CAP_SYS_ADMIN, which apps (including Settings, running as uid
+# system) do not have.
+#
+# The property is deliberately non-persistent: it lives only for the
+# current boot session, so on every fresh boot it starts unset (Settings
+# reads it as false). That already matches reality, since the bootloader
+# clears config.txt's recovery= flag itself once it has been honored.
+service recovery_boot_apply /vendor/bin/recovery_boot_apply.sh
+    class main
+    user root
+    group root
+    disabled
+    oneshot
+
+on property:vendor.rockchip.recovery_boot=true
+    start recovery_boot_apply
+
+on property:vendor.rockchip.recovery_boot=false
+    start recovery_boot_apply

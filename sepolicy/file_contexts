@@ -42,5 +42,8 @@
 /dev/block/by-name/userdata u:object_r:userdata_block_device:s0
 /dev/block/by-name/boot     u:object_r:boot_block_device:s0
 
+# Recovery boot
+/vendor/bin/recovery_boot_apply\.sh  u:object_r:recovery_boot_apply_exec:s0
+
 #V4L2
 /vendor/bin/hw/android\.hardware\.media\.c2@1\.2-service-v4l2(.*)?  u:object_r:mediacodec_exec:s0

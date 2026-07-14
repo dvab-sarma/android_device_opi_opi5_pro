@@ -1,0 +1,20 @@
+type recovery_boot_apply, domain;
+type recovery_boot_apply_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(recovery_boot_apply)
+
+# The service is a #!/vendor/bin/sh script; allow it to run through the
+# vendor shell interpreter and the toybox applets it shells out to
+# (mkdir, mount, umount, sed, getprop).
+allow recovery_boot_apply vendor_shell_exec:file rx_file_perms;
+allow recovery_boot_apply vendor_toolbox_exec:file rx_file_perms;
+
+# Mount/unmount the boot partition to edit config.txt.
+allow recovery_boot_apply self:global_capability_class_set sys_admin;
+allow recovery_boot_apply boot_block_device:blk_file { read write open getattr ioctl };
+allow recovery_boot_apply vfat:filesystem { mount unmount };
+allow recovery_boot_apply vfat:dir rw_dir_perms;
+allow recovery_boot_apply vfat:file create_file_perms;
+
+# /mnt is tmpfs; create/mount the mount point directory under it.
+allow recovery_boot_apply tmpfs:dir { search write add_name create rmdir mounton };
