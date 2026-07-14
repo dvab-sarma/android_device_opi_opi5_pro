@@ -1,12 +1,8 @@
 # Audio
-persist.vendor.audio.device=jack
-persist.vendor.audio.hdmi.device=vc4hdmi0
-#persist.vendor.audio.pcm.card.auto=true
-persist.audio.pcm.card=2
-persist.vendor.audio.pcm.device=0
+persist.vendor.audio.device=hdmi0
+ro.boot.audio.tinyalsa.simulate_input=true
 ro.config.media_vol_default=20
 ro.config.media_vol_steps=25
-ro.hardware.audio.primary=opi
 
 # Desktop mode
 #persist.wm.debug.desktop_experience_devopts=1
@@ -44,11 +40,6 @@ persist.bluetooth.a2dp_aac.vbr_supported=true
 # Camera
 ro.hardware.camera=libcamera
 
-# CEC
-#persist.vendor.hdmi.cec_device=cec0
-#ro.hdmi.cec_device_types=playback_device
-#ro.hdmi.device_type=4
-
 # Chipset
 ro.soc.manufacturer=Rockchip
 ro.soc.model=RK3588s
@@ -58,14 +49,12 @@ ro.soc.model=RK3588s
 persist.vendor.ffmpeg_codec2.rank.audio=16
 persist.vendor.ffmpeg_codec2.rank.video=256
 persist.vendor.ffmpeg_codec2.v4l2.h265=true
+vendor.ffmpeg.use_rga=1
+vendor.ffmpeg.rga_debug=true
 
 # Graphics
-
-#ro.vulkan.abi=arm64-v8a
-#ro.vulkan.version=1.2.0
-vendor.hwc.drm.ctm=DRM_OR_IGNORE
-#vendor.hwc.drm.disable_hdr=1
-#vendor.hwc.drm.force_mode=1920x1080
+vendor.hwc.drm.ctm=DRM_OR_GPU
+vendor.hwc.drm.force_mode=1920x1080
 
 # Lockscreen
 ro.lockscreen.disable.default=true
@@ -73,6 +62,8 @@ ro.lockscreen.disable.default=true
 # Media
 debug.stagefright.c2inputsurface=-1
 media.c2.hal.selection=aidl
+debug.c2.use_dmabufheaps=1
+debug.stagefright.c2-poolmask=458752
 
 # MGLRU
 persist.device_config.mglru_native.lru_gen_config=core
@@ -88,9 +79,8 @@ wifi.interface=wlan0
 persist.settings.large_screen_opt.enabled=true
 
 #minigbm
-vendor.minigbm.debug=logbos
+#vendor.minigbm.debug=logbos
 
 # Mesa
 ro.hardware.egl=mesa
-
 
