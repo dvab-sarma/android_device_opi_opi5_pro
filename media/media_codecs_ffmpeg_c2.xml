@@ -59,7 +59,7 @@
         <!-- Video codecs -->
         <MediaCodec name="c2.ffmpeg.av1.decoder" type="video/av01">
             <Alias name="OMX.ffmpeg.av1.decoder" />
-            <Limit name="size" min="2x2" max="2048x2048" />
+            <Limit name="size" min="2x2" max="4096x4096" />
             <Limit name="alignment" value="2x2" />
             <Feature name="adaptive-playback" />
         </MediaCodec>
