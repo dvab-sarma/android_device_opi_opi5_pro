@@ -1,0 +1,52 @@
+{
+    "settings": {
+        "disk_size": "19456 MiB",
+        "partitions_offset_begin": "16 MiB"
+    },
+    "partitions": [
+        {
+            "ab": false,
+            "label": "boot",
+            "position": 1,
+            "guid": "auto",
+            "type_guid": "efi_system",
+            "flags": "0x0000000000000001"
+        },
+        {
+            "ab": false,
+            "label": "system",
+            "position": 2,
+            "guid": "auto",
+            "type_guid": "linux_fs",
+            "flags": "0x0000000000000001"
+        },
+        {
+            "ab": false,
+            "label": "vendor",
+            "position": 3,
+            "guid": "auto",
+            "type_guid": "linux_fs",
+            "flags": "0x0000000000000001"
+        },
+        {
+            "ab": false,
+            "label": "metadata",
+            "position": 4,
+            "size": "16 MiB",
+            "allow_empty": true,
+            "guid": "auto",
+            "type_guid": "linux_fs",
+            "flags": "0x0000000000000001"
+        },
+        {
+            "ab": false,
+            "label": "userdata",
+            "position": 5,
+            "grow": true,
+            "allow_empty": true,
+            "guid": "auto",
+            "type_guid": "linux_fs",
+            "flags": "0xc000000000000000"
+        }
+    ]
+}
