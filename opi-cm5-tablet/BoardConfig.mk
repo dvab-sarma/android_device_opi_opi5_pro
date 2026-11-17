@@ -1,0 +1,88 @@
+#
+# Copyright (C) 2021-2022 KonstaKANG
+# Copyright (C) 2025 Venkata Atchuta Bheemeswara Sarma Darbha
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+CM5_DEVICE_PATH := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+CM5_COMMON_PATH := $(patsubst %/,%,$(dir $(CM5_DEVICE_PATH)))
+DEVICE_PATH := $(CM5_DEVICE_PATH)
+
+
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := cortex-a76
+
+
+# Bluetooth
+BOARD_HAVE_BLUETOOTH := true
+
+# Bootloader
+TARGET_NO_BOOTLOADER := true
+
+
+# Display
+TARGET_SCREEN_DENSITY := 240
+
+# Gralloc
+TARGET_USES_MINIGBM_GBM_MESA := false
+
+# Kernel
+BOARD_CUSTOM_BOOTIMG := true
+BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/mkbootimg.mk
+BOARD_KERNEL_CMDLINE := console=ttyS2,1500000 no_console_suspend root=/dev/ram0 rootwait androidboot.hardware=opi5
+
+# Manifest
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(DEVICE_PATH)/framework_compatibility_matrix.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
+PRODUCT_MANIFEST_FILES := $(DEVICE_PATH)/product_manifest.xml
+
+
+# Partition sizes
+BOARD_FLASH_BLOCK_SIZE := 4096
+BOARD_USES_METADATA_PARTITION := true
+BOARD_BOOTIMAGE_PARTITION_SIZE := 134217728 # 128M
+BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216 # 16M
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3221225472 # 3072M
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 134217728 # 128M
+BOARD_VENDORIMAGE_PARTITION_SIZE := 402653184 # 384M
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
+TARGET_USERIMAGES_USE_EXT4 := true
+
+
+# Platform
+TARGET_BOARD_PLATFORM := Rockchip
+
+TARGET_BOOTLOADER_BOARD_NAME := Rockchip
+
+# Properties
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
+
+# Recovery
+TARGET_NO_RECOVERY := true
+
+# SELinux
+BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+
+# Treble
+TARGET_COPY_OUT_VENDOR := vendor
+
+
+# Wifi
+BOARD_WLAN_DEVICE := bcmdhd
+BOARD_HOSTAPD_DRIVER := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
+WPA_SUPPLICANT_VERSION := VER_0_8_X
+
+# CM5 FAT boot partition containing Image, board DTB and raw Android ramdisk.
+BOARD_CUSTOM_BOOTIMG_MK := $(CM5_DEVICE_PATH)/mkbootimg.mk
+BOARD_BOOT_HEADER_VERSION := 4
+BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=fc000000.usb
