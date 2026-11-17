@@ -43,3 +43,12 @@ PRODUCT_MODEL := Orange Pi CM5 Tablet
 PRODUCT_MANUFACTURER := OrangePi
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.usb.config=adb
+
+# Firmware reused from dvab-sarma's pinned Orange Pi vendor tree.
+CM5_BRCM_FIRMWARE := vendor/opi/opi3b/proprietary/vendor/firmware/brcm
+PRODUCT_COPY_FILES += \
+    $(CM5_BRCM_FIRMWARE)/brcmfmac43456-sdio.bin:$(TARGET_COPY_OUT_VENDOR)/firmware/brcm/brcmfmac43456-sdio.bin \
+    $(CM5_BRCM_FIRMWARE)/brcmfmac43456-sdio.clm_blob:$(TARGET_COPY_OUT_VENDOR)/firmware/brcm/brcmfmac43456-sdio.clm_blob \
+    $(CM5_DEVICE_PATH)/firmware/nvram_ap6256.txt:$(TARGET_COPY_OUT_VENDOR)/firmware/brcm/brcmfmac43456-sdio.xunlong,orangepi-cm5-tablet.txt \
+    $(CM5_DEVICE_PATH)/firmware/regulatory.db:$(TARGET_COPY_OUT_VENDOR)/firmware/regulatory.db \
+    $(CM5_DEVICE_PATH)/firmware/regulatory.db.p7s:$(TARGET_COPY_OUT_VENDOR)/firmware/regulatory.db.p7s
