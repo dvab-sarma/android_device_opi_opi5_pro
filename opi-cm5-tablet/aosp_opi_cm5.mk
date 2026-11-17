@@ -52,3 +52,6 @@ PRODUCT_COPY_FILES += \
     $(CM5_DEVICE_PATH)/firmware/nvram_ap6256.txt:$(TARGET_COPY_OUT_VENDOR)/firmware/brcm/brcmfmac43456-sdio.xunlong,orangepi-cm5-tablet.txt \
     $(CM5_DEVICE_PATH)/firmware/regulatory.db:$(TARGET_COPY_OUT_VENDOR)/firmware/regulatory.db \
     $(CM5_DEVICE_PATH)/firmware/regulatory.db.p7s:$(TARGET_COPY_OUT_VENDOR)/firmware/regulatory.db.p7s
+
+PRODUCT_COPY_FILES += \
+    $(CM5_BRCM_FIRMWARE)/BCM4345C5.hcd:$(TARGET_COPY_OUT_VENDOR)/firmware/brcm/BCM4345C5.hcd
