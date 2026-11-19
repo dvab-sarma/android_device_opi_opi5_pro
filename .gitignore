@@ -1,0 +1,12 @@
+# Generated board artifacts and optional original vendor application.
+/opi-cm5-tablet/kernel/Image
+/opi-cm5-tablet/kernel/*.dtb
+/opi-cm5-tablet/kernel/u-boot-rockchip.bin
+/opi-cm5-tablet/kernel/kernel.config
+/opi-cm5-tablet/kernel/kernel.release
+/opi-cm5-tablet/wiringop_app/prebuilt/
+/opi-cm5-tablet/wiringop_app/*.apk
+/opi-cm5-tablet/wiringop_app/*.so
+__pycache__/
+
+/opi-cm5-tablet/kernel/*.generated
