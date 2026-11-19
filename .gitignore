@@ -8,3 +8,5 @@
 /opi-cm5-tablet/wiringop_app/*.apk
 /opi-cm5-tablet/wiringop_app/*.so
 __pycache__/
+
+/opi-cm5-tablet/kernel/*.generated
