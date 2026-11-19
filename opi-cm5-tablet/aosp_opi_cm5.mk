@@ -46,3 +46,8 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.usb.config=adb
 
 # Native wiringOP tools retain their upstream command/library names.
 PRODUCT_PACKAGES += gpio libwiringPi libwiringPiDev
+
+# Optional original vendor UI: generated locally from a user-supplied stock APK.
+ifneq ($(wildcard $(CM5_DEVICE_PATH)/wiringop_app/prebuilt/wiringop-unsigned.apk),)
+PRODUCT_PACKAGES += wiringop wiringopd
+endif

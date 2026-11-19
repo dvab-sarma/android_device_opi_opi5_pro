@@ -1,0 +1,24 @@
+package { default_applicable_licenses: ["wiringop_app_license"], }
+license {
+    name: "wiringop_app_license",
+    license_kinds: ["SPDX-license-identifier-Apache-2.0", "legacy_proprietary"],
+    license_text: ["NOTICE"],
+}
+cc_library_shared {
+    name: "libWiringOP",
+    srcs: ["wiringop_jni.c"],
+    sdk_version: "33",
+    header_libs: ["jni_headers"],
+    compile_multilib: "64",
+    stl: "none",
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+}
+cc_binary {
+    name: "wiringopd",
+    vendor: true,
+    srcs: ["wiringopd.cpp"],
+    compile_multilib: "64",
+    shared_libs: ["libwiringPi"],
+    init_rc: ["wiringopd.rc"],
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+}
