@@ -1,0 +1,25 @@
+import /vendor/etc/init/hw/init.opi5.usb.rc
+
+on init
+    symlink /sdcard /storage/sdcard0
+
+
+on fs
+    mount_all /vendor/etc/fstab.opi5 --early
+
+on late-fs
+    mount_all /vendor/etc/fstab.opi5 --late
+    
+on boot
+    chmod 0666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0666 /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+    chmod 0666 /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
+    chmod 0666 /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
+    chmod 0666 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+    chmod 0666 /sys/devices/system/cpu/cpu5/cpufreq/scaling_governor
+    chmod 0666 /sys/devices/system/cpu/cpu6/cpufreq/scaling_governor
+    chmod 0666 /sys/devices/system/cpu/cpu7/cpufreq/scaling_governor
+    chmod 0666 /sys/devices/system/cpu/cpufreq/boost
+
+    
+

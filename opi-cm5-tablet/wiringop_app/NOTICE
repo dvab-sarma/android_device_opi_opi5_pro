@@ -1,0 +1,4 @@
+The original wiringOP APK was recovered, without modifying the source filesystem,
+from this Orange Pi CM5's Android 13 installation. Its original vendor UI/resources
+are preserved. The Android 17 IPC/JNI adapter sources are Apache-2.0 licensed.
+The native wiringOP library is covered by its upstream LGPL-3.0 license.

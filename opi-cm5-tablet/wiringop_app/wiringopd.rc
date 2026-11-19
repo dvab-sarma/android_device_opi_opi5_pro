@@ -1,0 +1,7 @@
+service vendor.wiringop /vendor/bin/wiringopd
+    class late_start
+    user root
+    group root system
+    capabilities SYS_RAWIO DAC_OVERRIDE
+    seclabel u:r:su:s0
+    socket wiringop stream 0660 root system

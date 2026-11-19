@@ -1,0 +1,2 @@
+# SD/eMMC is selected automatically from the boot script's device.
+fdtfile=rk3588s-orangepi-cm5-tablet.dtb
