@@ -1,0 +1,4 @@
+Source: https://github.com/orangepi-xunlong/wiringOP
+Branch: next
+Commit: 0bb861127a77864775a306bd7cfc2e36836a66d1
+Date: 2026-11-12

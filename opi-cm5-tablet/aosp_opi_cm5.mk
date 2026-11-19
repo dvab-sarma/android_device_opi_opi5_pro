@@ -43,3 +43,6 @@ PRODUCT_MODEL := Orange Pi CM5 Tablet
 PRODUCT_MANUFACTURER := OrangePi
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += persist.sys.usb.config=adb
+
+# Native wiringOP tools retain their upstream command/library names.
+PRODUCT_PACKAGES += gpio libwiringPi libwiringPiDev
