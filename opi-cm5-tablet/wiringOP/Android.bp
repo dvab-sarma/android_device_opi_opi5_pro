@@ -1,0 +1,88 @@
+package {
+    default_applicable_licenses: ["wiringop_license"],
+}
+license {
+    name: "wiringop_license",
+    license_kinds: ["SPDX-license-identifier-LGPL-3.0"],
+    license_text: ["COPYING.LESSER"],
+}
+cc_defaults {
+    name: "wiringop_android_defaults",
+    vendor: true,
+    compile_multilib: "64",
+    c_std: "gnu11",
+    cflags: ["-D_GNU_SOURCE", "-Wno-error"],
+}
+cc_library_shared {
+    name: "libwiringPi",
+    defaults: ["wiringop_android_defaults"],
+    export_include_dirs: ["wiringPi"],
+    srcs: [
+        "wiringPi/wiringPi.c",
+        "wiringPi/wiringSerial.c",
+        "wiringPi/wiringShift.c",
+        "wiringPi/piHiPri.c",
+        "wiringPi/piThread.c",
+        "wiringPi/wiringPiSPI.c",
+        "wiringPi/wiringPiI2C.c",
+        "wiringPi/softPwm.c",
+        "wiringPi/softTone.c",
+        "wiringPi/mcp23008.c",
+        "wiringPi/mcp23016.c",
+        "wiringPi/mcp23017.c",
+        "wiringPi/mcp23s08.c",
+        "wiringPi/mcp23s17.c",
+        "wiringPi/sr595.c",
+        "wiringPi/pcf8574.c",
+        "wiringPi/pcf8591.c",
+        "wiringPi/mcp3002.c",
+        "wiringPi/mcp3004.c",
+        "wiringPi/mcp4802.c",
+        "wiringPi/mcp3422.c",
+        "wiringPi/max31855.c",
+        "wiringPi/max5322.c",
+        "wiringPi/ads1115.c",
+        "wiringPi/sn3218.c",
+        "wiringPi/bmp180.c",
+        "wiringPi/htu21d.c",
+        "wiringPi/ds18b20.c",
+        "wiringPi/rht03.c",
+        "wiringPi/drcSerial.c",
+        "wiringPi/drcNet.c",
+        "wiringPi/pseudoPins.c",
+        "wiringPi/wpiExtensions.c",
+        "wiringPi/w25q64.c",
+        "wiringPi/oled.c",
+    ],
+    shared_libs: ["libm"],
+}
+cc_library_shared {
+    name: "libwiringPiDev",
+    defaults: ["wiringop_android_defaults"],
+    export_include_dirs: ["devLib"],
+    srcs: [
+        "devLib/ds1302.c",
+        "devLib/maxdetect.c",
+        "devLib/piNes.c",
+        "devLib/gertboard.c",
+        "devLib/piFace.c",
+        "devLib/lcd128x64.c",
+        "devLib/lcd.c",
+        "devLib/scrollPhat.c",
+        "devLib/piGlow.c",
+    ],
+    shared_libs: ["libwiringPi", "libm"],
+}
+cc_binary {
+    name: "gpio",
+    defaults: ["wiringop_android_defaults"],
+    srcs: ["gpio/gpio.c", "gpio/readall.c"],
+    shared_libs: ["libwiringPi", "libwiringPiDev", "libm"],
+}
+// Optional test: links only the soft-output sources and mock GPIO functions.
+cc_binary {
+    name: "wiringop-selftest",
+    defaults: ["wiringop_android_defaults"],
+    srcs: ["android/soft-output-selftest.c", "wiringPi/softPwm.c", "wiringPi/softTone.c"],
+    local_include_dirs: ["wiringPi"],
+}

@@ -57,12 +57,10 @@ using ::ndk::ScopedAStatus;
 using ::std::shared_ptr;
 using ::std::string;
 
-//constexpr char kGadgetName[] = "1000480000.usb";
-constexpr char kGadgetName[] = "1000480000.usb";
-static MonitorFfs monitorFfs(kGadgetName);
-
-#define UDC_PATH "/sys/class/udc/1000480000.usb/"
-#define SPEED_PATH UDC_PATH "current_speed"
+static const std::string kGadgetName =
+        GetProperty("ro.boot.usbcontroller", "1000480000.usb");
+static MonitorFfs monitorFfs(kGadgetName.c_str());
+static const std::string SPEED_PATH = "/sys/class/udc/" + kGadgetName + "/current_speed";
 
 struct UsbGadget : public BnUsbGadget {
     UsbGadget();
